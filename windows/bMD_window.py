@@ -47,10 +47,14 @@ class bmd_window_class(QtGui.QWidget):
 		global cne_txt_old_mas
 		global fne_val_old_mas
 		
+		global cTM_v, nob_v, nov_v, spe_v, nospe_v, spp_v, nop_v, mpp_v, nompp_v
+		
+		global pd_2
+		
 		global parn
 		parn = par
 		
-		prj_path, mesh_name_txt = parent.prj_path_return()
+		prj_path, mesh_name_txt, pd_2 = parent.prj_path_return()
 		int_lng = parent.int_lng_path_return()
 		
 
@@ -59,18 +63,29 @@ class bmd_window_class(QtGui.QWidget):
 		#------------------------------initial----------------------------------#
 		
 		tab = QtGui.QTabWidget()
-		initial_group, spe_edit, nospe_lbl, nospe_edit, initial_btnSave, cTM_edit, nov_edit, spp_edit, nop_lbl, nop_edit, nob_edit, mpp_lbl, mpp_edit, nompp_lbl, nompp_edit, vertices_visible, blocks_visible, edges_visible, patches_visible, mergepatchpairs_visible = initial_class.out_frame_func(int_lng, prj_path, mesh_name_txt)
+		initial_group, spe_edit, nospe_lbl, nospe_edit, initial_btnSave, cTM_edit, nov_edit, spp_edit, nop_lbl, nop_edit, nob_edit, mpp_lbl, mpp_edit, nompp_lbl, nompp_edit, vertices_visible, blocks_visible, edges_visible, patches_visible, mergepatchpairs_visible = initial_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2)
 		tab.insertTab(0, initial_group, "&initial")
 		spe_edit.stateChanged.connect(self.spe_state_changed)
 		spp_edit.stateChanged.connect(self.spp_state_changed)
 		mpp_edit.stateChanged.connect(self.mpp_state_changed)
+		
+		cTM_v = cTM_edit.value()
+		nob_v = nob_edit.value()
+		nov_v = nov_edit.value()
+		spe_v = spe_edit.isChecked()
+		nospe_v = nospe_edit.value()
+		spp_v = spp_edit.isChecked()
+		nop_v = nop_edit.value()
+		mpp_v = mpp_edit.isChecked()
+		nompp_v = nompp_edit.value()
+		
 		initial_btnSave.clicked.connect(self.on_initial_btnSave_clicked)
-				
+		
 		#------------------------------vertices---------------------------------#
 
-		vertices_path = prj_path + '/' + mesh_name_txt + '/' + 'vertices.pkl'  
+		vertices_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'vertices.pkl'  
 		if vertices_visible == True and os.path.exists(vertices_path):
-			vertices_group, vertices_btnSave, obj, vert_list, i_list, vert_list_main = vertices_class.out_frame_func(int_lng, prj_path, mesh_name_txt, vertices_visible)
+			vertices_group, vertices_btnSave, obj, vert_list, i_list, vert_list_main = vertices_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, vertices_visible)
 			vertices_btnSave.clicked.connect(self.on_vertices_btnSave_clicked)
 			tab.insertTab(1, vertices_group, "&vertices")
 		else:
@@ -80,9 +95,9 @@ class bmd_window_class(QtGui.QWidget):
 				
 		#-------------------------------blocks_1--------------------------------#
 	
-		blocks_1_path = prj_path + '/' + mesh_name_txt + '/' + 'blocks_1.pkl'
+		blocks_1_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'blocks_1.pkl'
 		if blocks_visible == True and os.path.exists(blocks_1_path):
-			blocks_1_group, blocks_1_btnSave, obj, vrs_edit_list, mg_edit_list, mg_lbl_list, napr_lbl_list, napr_edit_list, ks_lbl_list, ks_edit_list, noeG_frame_list, j_list, v_1_obsh_list, v_2_obsh_list = blocks_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, blocks_visible)
+			blocks_1_group, blocks_1_btnSave, obj, vrs_edit_list, mg_edit_list, mg_lbl_list, napr_lbl_list, napr_edit_list, ks_lbl_list, ks_edit_list, noeG_frame_list, j_list, v_1_obsh_list, v_2_obsh_list = blocks_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, blocks_visible)
 			tab.insertTab(2, blocks_1_group, "&blocks_1")
 			blocks_1_btnSave.clicked.connect(self.on_blocks_1_btnSave_clicked)
 
@@ -114,9 +129,9 @@ class bmd_window_class(QtGui.QWidget):
 		
 		#-------------------------------blocks_2------------------------------------#
 	
-		blocks_2_path = prj_path + '/' + mesh_name_txt + '/' + 'blocks_2.pkl'
+		blocks_2_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'blocks_2.pkl'
 		if blocks_visible == True and os.path.exists(blocks_2_path):       
-			blocks_2_group, blocks_2_btnSave, obj_list, grad_type, sg_eg_obsh_list = blocks_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, blocks_visible)
+			blocks_2_group, blocks_2_btnSave, obj_list, grad_type, sg_eg_obsh_list = blocks_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, blocks_visible)
 			tab.insertTab(3, blocks_2_group, "&blocks_2")
 			blocks_2_btnSave.clicked.connect(self.on_blocks_2_btnSave_clicked)		
 		else:
@@ -126,9 +141,9 @@ class bmd_window_class(QtGui.QWidget):
 		
 		#--------------------------------edges_1------------------------------------#
 
-		edges_1_path = prj_path + '/' + mesh_name_txt + '/' + 'edges_1.pkl'	
+		edges_1_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'edges_1.pkl'	
 		if edges_visible == True and os.path.exists(edges_1_path):
-			edges_1_group, edges_1_btnSave, obj, edge_1_list, dots_quant_list, dots_quant_lbl_list = edges_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, edges_visible)
+			edges_1_group, edges_1_btnSave, obj, edge_1_list, dots_quant_list, dots_quant_lbl_list = edges_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, edges_visible)
 			tab.insertTab(4, edges_1_group, "&edges_1")
 			edges_1_btnSave.clicked.connect(self.on_edges_1_btnSave_clicked)
 			edg_txt_old_mas = []
@@ -148,9 +163,9 @@ class bmd_window_class(QtGui.QWidget):
 		
 		#--------------------------------edges_2------------------------------------#
 	
-		edges_2_path = prj_path + '/' + mesh_name_txt + '/' + 'edges_2.pkl'
+		edges_2_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'edges_2.pkl'
 		if edges_visible == True and os.path.exists(edges_2_path):
-			edges_2_group, edges_2_btnSave, nod_lbl_list, nod_main_list, nod_metk_list = edges_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, edges_visible)
+			edges_2_group, edges_2_btnSave, nod_lbl_list, nod_main_list, nod_metk_list = edges_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, edges_visible)
 			tab.insertTab(5, edges_2_group, "&edges_2")
 			edges_2_btnSave.clicked.connect(self.on_edges_2_btnSave_clicked)
 		else:
@@ -160,9 +175,9 @@ class bmd_window_class(QtGui.QWidget):
 		
 		#--------------------------------patches_1--------------------------------#
 
-		patches_1_path = prj_path + '/' + mesh_name_txt + '/' + 'patches_1.pkl'
+		patches_1_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'patches_1.pkl'
 		if patches_visible == True and os.path.exists(patches_1_path):
-			patches_1_group, patches_1_btnSave, pne_list, pte_list, cnl_list, cne_list, fne_list, patch_def_list = patches_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, patches_visible)
+			patches_1_group, patches_1_btnSave, pne_list, pte_list, cnl_list, cne_list, fne_list, patch_def_list = patches_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, patches_visible)
 			tab.insertTab(6, patches_1_group, "&patches_1")
 			patches_1_btnSave.clicked.connect(self.on_patches_1_btnSave_clicked)
 			pte_txt_old_mas = []
@@ -186,9 +201,9 @@ class bmd_window_class(QtGui.QWidget):
 		
 		#--------------------------------patches_2--------------------------------#
 
-		patches_2_path = prj_path + '/' + mesh_name_txt + '/' + 'patches_2.pkl'
+		patches_2_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'patches_2.pkl'
 		if patches_visible == True and os.path.exists(patches_2_path):
-			patches_2_group, patches_2_btnSave, p_list, fe_main_list = patches_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, patches_visible)
+			patches_2_group, patches_2_btnSave, p_list, fe_main_list = patches_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, patches_visible)
 			tab.insertTab(7, patches_2_group, "&patches_2")
 			patches_2_btnSave.clicked.connect(self.on_patches_2_btnSave_clicked)
 		else:
@@ -198,9 +213,9 @@ class bmd_window_class(QtGui.QWidget):
 			
 		#--------------------------------mergepatchpairs------------------------------------#
 
-		mergepatchpairs_path = prj_path + '/' + mesh_name_txt + '/' + 'mergepatchpairs.pkl'	
+		mergepatchpairs_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'mergepatchpairs.pkl'	
 		if mergepatchpairs_visible == True and os.path.exists(mergepatchpairs_path):
-			mergepatchpairs_group, mergepatchpairs_btnSave, master_patch_list, slave_patch_list = mergepatchpairs_class.out_frame_func(int_lng, prj_path, mesh_name_txt, mergepatchpairs_visible)
+			mergepatchpairs_group, mergepatchpairs_btnSave, master_patch_list, slave_patch_list = mergepatchpairs_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, mergepatchpairs_visible)
 			tab.insertTab(8, mergepatchpairs_group, "&mergepatchpairs")
 			mergepatchpairs_btnSave.clicked.connect(self.on_mergepatchpairs_btnSave_clicked)
 			master_txt_old_mas = []
@@ -440,7 +455,7 @@ class bmd_window_class(QtGui.QWidget):
 		
 		if vertices_visible == False and blocks_visible == False and edges_visible == False and patches_visible == False and mergepatchpairs_visible == False:
 			
-			initial_path_file = prj_path + '/' + mesh_name_txt + '/' + 'initial.pkl'
+			initial_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'initial.pkl'
 			if os.path.exists(initial_path_file) == True:
 				input = open(initial_path_file, 'rb')
 				obj = pickle.load(input)
@@ -506,7 +521,7 @@ class bmd_window_class(QtGui.QWidget):
 			else:
 				obj = {"cTM": cTM_v, "nov": nov_v, "nob": nob_v, "spe": spe_v, "spp": spp_v, "mpp": mpp_v}
 		
-			prj_path_dir = prj_path + '/' + mesh_name_txt
+			prj_path_dir = prj_path + '/' + mesh_name_txt + '_' + pd_2
 
 			if os.path.exists(prj_path_dir) == False:
 				os.mkdir(prj_path_dir) 
@@ -519,7 +534,7 @@ class bmd_window_class(QtGui.QWidget):
 		#-------------------------------Сохраняем файл сетки если пересохраняем имеющийся------------------------------------#
 			
 		if vertices_visible == True and blocks_visible == True and edges_visible == True or patches_visible == True or mergepatchpairs_visible == True:
-			initial_path_file = prj_path + '/' + mesh_name_txt + '/' + 'initial.pkl'
+			initial_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'initial.pkl'
 			
 			input = open(initial_path_file, 'rb')
 			obj = pickle.load(input)
@@ -577,7 +592,7 @@ class bmd_window_class(QtGui.QWidget):
 					
 				tab.removeTab(1)
 			
-				vertices_group, vertices_btnSave, obj, vert_list, i_list, vert_list_main = vertices_class.out_frame_func(int_lng, prj_path, mesh_name_txt, vertices_visible)
+				vertices_group, vertices_btnSave, obj, vert_list, i_list, vert_list_main = vertices_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, vertices_visible)
 				vertices_btnSave.clicked.connect(self.on_vertices_btnSave_clicked)
 			
 				tab.insertTab(1, vertices_group, "&vertices")
@@ -592,7 +607,7 @@ class bmd_window_class(QtGui.QWidget):
 				
 				tab.removeTab(2)
 			
-				blocks_1_group, blocks_1_btnSave, obj, vrs_edit_list, mg_edit_list, mg_lbl_list, napr_lbl_list, napr_edit_list, ks_lbl_list, ks_edit_list, noeG_frame_list, j_list, v_1_obsh_list, v_2_obsh_list = blocks_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, blocks_visible)
+				blocks_1_group, blocks_1_btnSave, obj, vrs_edit_list, mg_edit_list, mg_lbl_list, napr_lbl_list, napr_edit_list, ks_lbl_list, ks_edit_list, noeG_frame_list, j_list, v_1_obsh_list, v_2_obsh_list = blocks_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, blocks_visible)
 				blocks_1_btnSave.clicked.connect(self.on_blocks_1_btnSave_clicked)
 			
 				tab.insertTab(2, blocks_1_group, "&blocks_1")
@@ -619,7 +634,7 @@ class bmd_window_class(QtGui.QWidget):
 				
 				tab.removeTab(4)
 			
-				edges_1_group, edges_1_btnSave, obj, edge_1_list, dots_quant_list, dots_quant_lbl_list = edges_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, edges_visible)
+				edges_1_group, edges_1_btnSave, obj, edge_1_list, dots_quant_list, dots_quant_lbl_list = edges_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, edges_visible)
 				edges_1_btnSave.clicked.connect(self.on_edges_1_btnSave_clicked)
 
 				tab.insertTab(4, edges_1_group, "&edges_1")
@@ -660,7 +675,7 @@ class bmd_window_class(QtGui.QWidget):
 				
 				tab.removeTab(6)
 					
-				patches_1_group, patches_1_btnSave, pne_list, pte_list, cnl_list, cne_list, fne_list, patch_def_list = patches_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, patches_visible)		
+				patches_1_group, patches_1_btnSave, pne_list, pte_list, cnl_list, cne_list, fne_list, patch_def_list = patches_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, patches_visible)		
 				patches_1_btnSave.clicked.connect(self.on_patches_1_btnSave_clicked)
 			
 				tab.insertTab(6, patches_1_group, "&patches_1")
@@ -704,7 +719,7 @@ class bmd_window_class(QtGui.QWidget):
 				
 				tab.removeTab(8)
 			
-				mergepatchpairs_group, mergepatchpairs_btnSave, master_patch_list, slave_patch_list = mergepatchpairs_class.out_frame_func(int_lng, prj_path, mesh_name_txt, mergepatchpairs_visible)
+				mergepatchpairs_group, mergepatchpairs_btnSave, master_patch_list, slave_patch_list = mergepatchpairs_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, mergepatchpairs_visible)
 				mergepatchpairs_btnSave.clicked.connect(self.on_mergepatchpairs_btnSave_clicked)
 
 				tab.insertTab(8, mergepatchpairs_group, "&mergepatchpairs")	
@@ -727,7 +742,7 @@ class bmd_window_class(QtGui.QWidget):
 				if os.path.exists(vertices_path) == True:
 					os.remove(vertices_path)
 				
-				vertices_group, vertices_btnSave, obj, vert_list, i_list, vert_list_main = vertices_class.out_frame_func(int_lng, prj_path, mesh_name_txt, vertices_visible)
+				vertices_group, vertices_btnSave, obj, vert_list, i_list, vert_list_main = vertices_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, vertices_visible)
 				vertices_btnSave.clicked.connect(self.on_vertices_btnSave_clicked)
 				tab.setTabEnabled(1, True)
 				tab.removeTab(1)
@@ -741,7 +756,7 @@ class bmd_window_class(QtGui.QWidget):
 				if os.path.exists(blocks_2_path) == True:
 					os.remove(blocks_2_path)	
 				
-				blocks_1_group, blocks_1_btnSave, obj, vrs_edit_list, mg_edit_list, mg_lbl_list, napr_lbl_list, napr_edit_list, ks_lbl_list, ks_edit_list, noeG_frame_list, j_list, v_1_obsh_list, v_2_obsh_list = blocks_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, blocks_visible)
+				blocks_1_group, blocks_1_btnSave, obj, vrs_edit_list, mg_edit_list, mg_lbl_list, napr_lbl_list, napr_edit_list, ks_lbl_list, ks_edit_list, noeG_frame_list, j_list, v_1_obsh_list, v_2_obsh_list = blocks_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, blocks_visible)
 				blocks_1_btnSave.clicked.connect(self.on_blocks_1_btnSave_clicked)
 								
 				for bvc in range(len(vrs_edit_list)):
@@ -768,7 +783,7 @@ class bmd_window_class(QtGui.QWidget):
 				if os.path.exists(edges_2_path) == True:
 					os.remove(edges_2_path)	
 				
-				edges_1_group, edges_1_btnSave, obj, edge_1_list, dots_quant_list, dots_quant_lbl_list = edges_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, edges_visible)
+				edges_1_group, edges_1_btnSave, obj, edge_1_list, dots_quant_list, dots_quant_lbl_list = edges_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, edges_visible)
 				edges_1_btnSave.clicked.connect(self.on_edges_1_btnSave_clicked)
 
 				for bvc in range(len(edge_1_list)):	
@@ -799,7 +814,7 @@ class bmd_window_class(QtGui.QWidget):
 				tab.setTabEnabled(5, False)
 		
 		if patches_visible == False:
-
+			
 			if spp_v == True and spp_v != spp_old or spp_v == True and os.path.exists(patches_1_path) == False or spp_v == True and spp_v == spp_old and nop_v != nop_old:
 
 				if os.path.exists(patches_1_path) == True:
@@ -807,7 +822,7 @@ class bmd_window_class(QtGui.QWidget):
 				if os.path.exists(patches_2_path) == True:
 					os.remove(patches_2_path)
 
-				patches_1_group, patches_1_btnSave, pne_list, pte_list, cnl_list, cne_list, fne_list, patch_def_list = patches_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, patches_visible)		
+				patches_1_group, patches_1_btnSave, pne_list, pte_list, cnl_list, cne_list, fne_list, patch_def_list = patches_1_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, patches_visible)		
 				patches_1_btnSave.clicked.connect(self.on_patches_1_btnSave_clicked)
 				
 				for bvc in range(len(pte_list)):	
@@ -855,7 +870,7 @@ class bmd_window_class(QtGui.QWidget):
 				if os.path.exists(mergepatchpairs_path) == True:
 					os.remove(mergepatchpairs_path)
 
-				mergepatchpairs_group, mergepatchpairs_btnSave, master_patch_list, slave_patch_list = mergepatchpairs_class.out_frame_func(int_lng, prj_path, mesh_name_txt, mergepatchpairs_visible)
+				mergepatchpairs_group, mergepatchpairs_btnSave, master_patch_list, slave_patch_list = mergepatchpairs_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, mergepatchpairs_visible)
 				mergepatchpairs_btnSave.clicked.connect(self.on_mergepatchpairs_btnSave_clicked)
 	
 				tab.setTabEnabled(8, True)
@@ -927,7 +942,7 @@ class bmd_window_class(QtGui.QWidget):
 				vertices_obj_list.append(obj)
 				l = l + 1
 						
-			output = open(prj_path + '/' + mesh_name_txt + '/' + 'vertices.pkl', 'wb')
+			output = open(prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'vertices.pkl', 'wb')
 			pickle.dump(vertices_obj_list, output)
 			output.close()
 			
@@ -1040,7 +1055,7 @@ class bmd_window_class(QtGui.QWidget):
 				i = i + 1
 				n = n + 1
 
-			output = open(prj_path + '/' + mesh_name_txt + '/' + 'blocks_1.pkl', 'wb')
+			output = open(prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'blocks_1.pkl', 'wb')
 			pickle.dump(obj_list, output)
 			output.close()
 			
@@ -1055,7 +1070,7 @@ class bmd_window_class(QtGui.QWidget):
 				if os.path.exists(blocks_2_path) == True:
 					os.remove(blocks_2_path)
 					
-				blocks_2_group, blocks_2_btnSave, obj_list, grad_type, sg_eg_obsh_list = blocks_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, blocks_visible)
+				blocks_2_group, blocks_2_btnSave, obj_list, grad_type, sg_eg_obsh_list = blocks_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, blocks_visible)
 	
 				blocks_2_btnSave.clicked.connect(self.on_blocks_2_btnSave_clicked)
 			
@@ -1085,10 +1100,10 @@ class bmd_window_class(QtGui.QWidget):
 					ks_val_new = ks_edit_list[bvc].value()
 					ks_val_new_mas.append(ks_val_new)
 					
-				if vrs_txt_old_mas != vrs_txt_new_mas or mg_bool_old_mas != mg_bool_new_mas or napr_txt_old_mas != napr_txt_new_mas or ks_val_old_mas != ks_val_new_mas:
+				if vrs_txt_old_mas != vrs_txt_new_mas or mg_bool_old_mas != mg_bool_new_mas or napr_txt_old_mas != napr_txt_new_mas or ks_val_old_mas != ks_val_new_mas or os.path.exists(blocks_2_path) == False:
 					if os.path.exists(blocks_2_path) == True:
 						os.remove(blocks_2_path)
-					blocks_2_group, blocks_2_btnSave, obj_list, grad_type, sg_eg_obsh_list = blocks_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, blocks_visible)
+					blocks_2_group, blocks_2_btnSave, obj_list, grad_type, sg_eg_obsh_list = blocks_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, blocks_visible)
 					blocks_2_btnSave.clicked.connect(self.on_blocks_2_btnSave_clicked)
 					tab.setTabEnabled(3, True)
 					tab.removeTab(3)
@@ -1309,7 +1324,7 @@ class bmd_window_class(QtGui.QWidget):
 				itog_list.append(obj_itog)
 				w = w + 1
 			
-			output = open(prj_path + '/' + mesh_name_txt + '/' + 'blocks_2.pkl', 'wb')
+			output = open(prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'blocks_2.pkl', 'wb')
 			pickle.dump(itog_list, output)
 			output.close()
 			
@@ -1344,7 +1359,7 @@ class bmd_window_class(QtGui.QWidget):
 			obj_list.append(obj)
 			i = i + 1
 			
-		output = open(prj_path + '/' + mesh_name_txt + '/' + 'edges_1.pkl', 'wb')
+		output = open(prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'edges_1.pkl', 'wb')
 		pickle.dump(obj_list, output)
 		output.close()
 			
@@ -1358,7 +1373,7 @@ class bmd_window_class(QtGui.QWidget):
 			if os.path.exists(edges_2_path) == True:
 				os.remove(edges_2_path)	
 			
-			edges_2_group, edges_2_btnSave, nod_lbl_list, nod_main_list, nod_metk_list = edges_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, edges_visible)
+			edges_2_group, edges_2_btnSave, nod_lbl_list, nod_main_list, nod_metk_list = edges_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, edges_visible)
 			edges_2_btnSave.clicked.connect(self.on_edges_2_btnSave_clicked)
 			tab.setTabEnabled(5, True)
 			tab.removeTab(5)
@@ -1374,12 +1389,12 @@ class bmd_window_class(QtGui.QWidget):
 				dots_vls_new = dots_quant_list[bvc].value()
 				dots_vls_new_mas.append(dots_vls_new)
 					
-			if edg_txt_old_mas != edg_txt_new_mas or dots_vls_old_mas != dots_vls_new_mas or nospe_old != nospe_v or nospe_old == nospe_v and spe_old != spe_v:
+			if edg_txt_old_mas != edg_txt_new_mas or dots_vls_old_mas != dots_vls_new_mas or nospe_old != nospe_v or nospe_old == nospe_v and spe_old != spe_v or os.path.exists(edges_2_path) == False:
 
 				if os.path.exists(edges_2_path) == True:
 					os.remove(edges_2_path)
 						
-				edges_2_group, edges_2_btnSave, nod_lbl_list, nod_main_list, nod_metk_list = edges_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, edges_visible)
+				edges_2_group, edges_2_btnSave, nod_lbl_list, nod_main_list, nod_metk_list = edges_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, edges_visible)
 				edges_2_btnSave.clicked.connect(self.on_edges_2_btnSave_clicked)
 				tab.setTabEnabled(5, True)
 				tab.removeTab(5)
@@ -1467,7 +1482,7 @@ class bmd_window_class(QtGui.QWidget):
 
 		if len(nod_lbl_list) == len(common_list):
 		
-			output = open(prj_path + '/' + mesh_name_txt + '/' + 'edges_2.pkl', 'wb')
+			output = open(prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'edges_2.pkl', 'wb')
 			pickle.dump(common_list, output)
 			output.close()
 				
@@ -1541,7 +1556,7 @@ class bmd_window_class(QtGui.QWidget):
 				i = i + 1
 				j = j + 1
 
-			output = open(prj_path + '/' + mesh_name_txt + '/' + 'patches_1.pkl', 'wb')
+			output = open(prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'patches_1.pkl', 'wb')
 			pickle.dump(obj_list, output)
 			output.close()
 			
@@ -1555,7 +1570,7 @@ class bmd_window_class(QtGui.QWidget):
 				if os.path.exists(patches_2_path) == True:
 					os.remove(patches_2_path)
 					
-				patches_2_group, patches_2_btnSave, p_list, fe_main_list = patches_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, patches_visible)
+				patches_2_group, patches_2_btnSave, p_list, fe_main_list = patches_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, patches_visible)
 				patches_2_btnSave.clicked.connect(self.on_patches_2_btnSave_clicked)
 				tab.setTabEnabled(7, True)
 				tab.removeTab(7)
@@ -1578,11 +1593,11 @@ class bmd_window_class(QtGui.QWidget):
 					fne_val_new = fne_list[bvc].value()
 					fne_val_new_mas.append(fne_val_new)
 
-				if pte_txt_old_mas != pte_txt_new_mas or cne_txt_old_mas != cne_txt_new_mas or fne_val_old_mas != fne_val_new_mas:
+				if pte_txt_old_mas != pte_txt_new_mas or cne_txt_old_mas != cne_txt_new_mas or fne_val_old_mas != fne_val_new_mas or os.path.exists(patches_2_path) == False:
 					if os.path.exists(patches_2_path) == True:
 						os.remove(patches_2_path)
 
-					patches_2_group, patches_2_btnSave, p_list, fe_main_list = patches_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, patches_visible)
+					patches_2_group, patches_2_btnSave, p_list, fe_main_list = patches_2_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, patches_visible)
 					patches_2_btnSave.clicked.connect(self.on_patches_2_btnSave_clicked)
 					tab.setTabEnabled(7, True)
 					tab.removeTab(7)
@@ -1599,7 +1614,7 @@ class bmd_window_class(QtGui.QWidget):
 
 				tab.removeTab(8)
 
-				mergepatchpairs_group, mergepatchpairs_btnSave, master_patch_list, slave_patch_list = mergepatchpairs_class.out_frame_func(int_lng, prj_path, mesh_name_txt, mergepatchpairs_visible)
+				mergepatchpairs_group, mergepatchpairs_btnSave, master_patch_list, slave_patch_list = mergepatchpairs_class.out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, mergepatchpairs_visible)
 				mergepatchpairs_btnSave.clicked.connect(self.on_mergepatchpairs_btnSave_clicked)
 
 				tab.insertTab(8, mergepatchpairs_group, "&mergepatchpairs")	
@@ -1684,7 +1699,7 @@ class bmd_window_class(QtGui.QWidget):
 				
 				i = i + 1
 			
-			output = open(prj_path + '/' + mesh_name_txt + '/' + 'patches_2.pkl', 'wb')
+			output = open(prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'patches_2.pkl', 'wb')
 			pickle.dump(obj_list, output)
 			output.close()
 			
@@ -1708,7 +1723,7 @@ class bmd_window_class(QtGui.QWidget):
 			i = i + 1
 			k = k + 1
 			
-		output = open(prj_path + '/' + mesh_name_txt + '/' + 'mergepatchpairs.pkl', 'wb')
+		output = open(prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'mergepatchpairs.pkl', 'wb')
 		pickle.dump(obj_list, output)
 		output.close()
 
@@ -1739,5 +1754,5 @@ class bmd_window_class(QtGui.QWidget):
 	###---------------------Запуск сохранения файла blocksMeshDict-------------------------###			
 			
 	def on_btnSave_clicked(self):
-		blockMeshDict_generation_class.blockMeshDict_func(int_lng, parn, tab, spe_edit, spp_edit, mpp_edit, prj_path, mesh_name_txt, self)
+		blockMeshDict_generation_class.blockMeshDict_func(int_lng, parn, tab, spe_edit, spp_edit, mpp_edit, prj_path, mesh_name_txt, pd_2, self)
 	             

@@ -10,8 +10,8 @@ import time
 from windows.prj_window import prj_form_class
 from windows.lng_window import lng_form_class
 
-from threads.blockMesh_generation import msh_generation_thread
-from threads.blockMesh_visualisation import msh_visualisation_thread
+from threads.msh_generation import msh_generation_thread
+from threads.msh_visualisation import msh_visualisation_thread
 from functions.bM_functions import bM_functions_class
 
 ###-------------------------Главное окно программы-----------------------------###
@@ -174,21 +174,27 @@ class MainWindowClass(QtGui.QMainWindow):
 
         pp_dir, pp_sys = os.path.split(prj_path_val)
 
+    ###.............................Функция получения типа сетки..............................###
+
+    def on_mesh_type_get(self, pd_2):
+        global msh_type
+        msh_type = pd_2
+
     ###...........................Функция запуска генерации расчетной сетки........................###    
 
     def on_bm_run(self): 
         
-        bm = msh_generation_thread(prj_path_val, mesh_name_txt_val, pp_dir, self, self.interface_lng_val)
-        self.connect(bm, QtCore.SIGNAL("finished(int, QString, QString, PyQt_PyObject, QString)"), bM_functions_class.on_bm_finished)
+        bm = msh_generation_thread(prj_path_val, mesh_name_txt_val, pp_dir, self, self.interface_lng_val, msh_type)
+        self.connect(bm, QtCore.SIGNAL("finished(int, QString, QString, PyQt_PyObject, QString, QString)"), msh_functions_class.on_msh_finished)
         bm.start()
 
     ###...........................Функция запуска визуализации расчетной сетки.....................###         
 
     def on_visual_bm_run(self):
 
-        bmv = msh_visualisation_thread(prj_path_val, mesh_name_txt_val, pp_dir, self, self.interface_lng_val)
-        self.connect(bmv, QtCore.SIGNAL("started(PyQt_PyObject, QString)"), bM_functions_class.on_bm_visual_run)
-        self.connect(bmv, QtCore.SIGNAL("finished(int, QString, QString, PyQt_PyObject, QString)"), bM_functions_class.on_bm_visual_finished)
+        bmv = msh_visualisation_thread(prj_path_val, mesh_name_txt_val, pp_dir, self, self.interface_lng_val, msh_type)
+        self.connect(bmv, QtCore.SIGNAL("started(PyQt_PyObject, QString, QString)"), msh_functions_class.on_msh_visual_run)
+        self.connect(bmv, QtCore.SIGNAL("finished(int, QString, QString, PyQt_PyObject, QString, QString)"), msh_functions_class.on_msh_visual_finished)
         bmv.start()
 
 ###---------------------------Формирование главного окна программы-------------------------###

@@ -6,14 +6,14 @@ import pickle
 import os
 
 class edges_2_class():
-	def out_frame_func(int_lng, prj_path, mesh_name_txt, edges_visible): 
+	def out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, edges_visible): 
 		edges_2_obj = None
 		
 		#----------------Если файл edges_2.pkl существует, получаем данные из него для вывода в форму---------------#
 		
 		if edges_visible == True:
 		
-			edges_2_path_file = prj_path + '/' + mesh_name_txt + '/' + 'edges_2.pkl'
+			edges_2_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'edges_2.pkl'
 			if os.path.exists(edges_2_path_file):
 		
 				input = open(edges_2_path_file, 'rb')
@@ -29,7 +29,7 @@ class edges_2_class():
 		
 		#---------------Формируем внешний вид формы для файла edges_2.pkl на основе данных файла edges_1.pkl-------------#
 		
-		edges_1_path_file = prj_path + '/' + mesh_name_txt + '/' + 'edges_1.pkl'
+		edges_1_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'edges_1.pkl'
 		if os.path.exists(edges_1_path_file):
 		
 			input = open(edges_1_path_file, 'rb')

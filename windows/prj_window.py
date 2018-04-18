@@ -9,6 +9,7 @@ import os
 import os.path
 
 from windows.bMD_window import bmd_window_class
+from windows.sHMD_window import shmd_window_class
 
 # ---------------------------Главная форма проекта-------------------------------#
 		
@@ -44,6 +45,7 @@ class prj_form_class(QtGui.QWidget):
 		self.chc_grid.addWidget(self.cf_radio, 0, 1)
 		self.chc_grid.addWidget(self.chc_button, 0, 2)
 		self.chc_frame = QtGui.QFrame()
+		self.chc_frame.setFixedSize(400, 50)
 		self.chc_frame.setFrameShape(QtGui.QFrame.Panel)
 		self.chc_frame.setFrameShadow(QtGui.QFrame.Sunken)
 		self.chc_frame.setLayout(self.chc_grid)
@@ -52,6 +54,14 @@ class prj_form_class(QtGui.QWidget):
         
 # -------------------------------------Второй блок формы------------------------------------#
 
+		self.mesh_type_label = QtGui.QLabel()
+		self.bm = QtGui.QRadioButton("blockMesh")
+		self.bm.setChecked(True)
+		self.shm = QtGui.QRadioButton("snappyHexMesh")
+		self.mesh_type_vbox = QtGui.QVBoxLayout()
+		self.mesh_type_vbox.addWidget(self.bm)
+		self.mesh_type_vbox.addWidget(self.shm)
+		
 		self.mesh_label = QtGui.QLabel()
 		self.mesh_name = QtGui.QLineEdit()
 		self.mesh_name.setFixedSize(214, 25)
@@ -68,11 +78,13 @@ class prj_form_class(QtGui.QWidget):
 		self.prj_button.setFixedSize(25, 25)
 				
 		self.prj_grid = QtGui.QGridLayout()
-		self.prj_grid.addWidget(self.mesh_label, 0, 0, alignment=QtCore.Qt.AlignCenter)
-		self.prj_grid.addWidget(self.mesh_name, 0, 1, alignment=QtCore.Qt.AlignCenter)
-		self.prj_grid.addWidget(self.prj_path_label, 1, 0, alignment=QtCore.Qt.AlignCenter)
-		self.prj_grid.addWidget(self.prj_path_name, 1, 1, alignment=QtCore.Qt.AlignCenter)
-		self.prj_grid.addWidget(self.prj_button, 1, 2)
+		self.prj_grid.addWidget(self.mesh_type_label, 0, 0, alignment=QtCore.Qt.AlignCenter)
+		self.prj_grid.addLayout(self.mesh_type_vbox, 0, 1, alignment=QtCore.Qt.AlignCenter)
+		self.prj_grid.addWidget(self.mesh_label, 1, 0, alignment=QtCore.Qt.AlignCenter)
+		self.prj_grid.addWidget(self.mesh_name, 1, 1, alignment=QtCore.Qt.AlignCenter)
+		self.prj_grid.addWidget(self.prj_path_label, 2, 0, alignment=QtCore.Qt.AlignCenter)
+		self.prj_grid.addWidget(self.prj_path_name, 2, 1, alignment=QtCore.Qt.AlignCenter)
+		self.prj_grid.addWidget(self.prj_button, 2, 2)
 		self.prj_frame = QtGui.QFrame()
 		self.prj_frame.setEnabled(False)
 		self.prj_frame.setStyleSheet("border-color: darkgray;")
@@ -121,6 +133,7 @@ class prj_form_class(QtGui.QWidget):
 			self.chc_label.setText("Создайте новую сетку или откройте существующую")
 			self.nf_radio.setText("Создать новую")
 			self.cf_radio.setText("Открыть существующую")
+			self.mesh_type_label.setText("Выберите тип сетки:")
 			self.mesh_label.setText("Название сетки:")
 			self.prj_path_label.setText("Путь:")
 			self.save_button.setText("Сохранить")
@@ -129,6 +142,7 @@ class prj_form_class(QtGui.QWidget):
 			self.chc_label.setText("Create a new mesh or open an existing mesh")
 			self.nf_radio.setText("Create new mesh")
 			self.cf_radio.setText("Open existing mesh")
+			self.mesh_type_label.setText("Select mesh type:")
 			self.mesh_label.setText("Mesh name:")
 			self.prj_path_label.setText("Path:")
 			self.save_button.setText("Save")
@@ -156,10 +170,23 @@ class prj_form_class(QtGui.QWidget):
 
 	def on_prj_choose(self):
 		global prj_path
+		global pd_2
 		prj_path = QtGui.QFileDialog.getExistingDirectory(directory=QtCore.QDir.currentPath())
 		prj_dir, prj_sys = os.path.split(prj_path)
 		
-		pckls_path = prj_path + '/' + self.mesh_name.text() + '/'
+		if self.bm.isChecked() == True:
+			pckls_path = prj_path + '/' + self.mesh_name.text() + '_blockMesh' + '/'
+			pd_2 = 'blockMesh'
+		elif self.shm.isChecked() == True:
+			pckls_path = prj_path + '/' + self.mesh_name.text() + '_snappyHexMesh' + '/'
+			pd_2 = 'snappyHexMesh'
+			
+		if pd_2 == 'blockMesh':
+			self.bm.setChecked(True)
+			par.on_mesh_type_get(pd_2)
+		elif pd_2 == 'snappyHexMesh':
+			self.shm.setChecked(True)
+			par.on_mesh_type_get(pd_2)
 		
 		if prj_sys == 'system':
 			if os.path.exists(pckls_path) == True:
@@ -179,15 +206,28 @@ class prj_form_class(QtGui.QWidget):
 		global prj_path
 		global pickles_dir
 		global prj_dir
+		global pd_2
 
 		prj_dir = QtGui.QFileDialog.getExistingDirectory(directory=QtCore.QDir.currentPath())
 		prj_path, pickles_dir = os.path.split(prj_dir)
-
+		
 		initial_path = prj_dir + '/' + 'initial.pkl'
 		if os.path.exists(initial_path) == True:
+			pd_1, pd_2 = pickles_dir.split('_')
 			self.prj_path_name.setText(prj_dir)
 			self.save_button.setEnabled(True)
-			self.mesh_name.setText(pickles_dir)
+			self.mesh_name.setText(pd_1)
+			if pd_2 == 'blockMesh':
+				self.bm.setChecked(True)
+				par.on_mesh_type_get(pd_2)
+			elif pd_2 == 'snappyHexMesh':
+				self.shm.setChecked(True)
+				par.on_mesh_type_get(pd_2)
+				
+			self.mesh_type_label.setEnabled(False)
+			self.bm.setEnabled(False)
+			self.shm.setEnabled(False)
+				
 			self.prj_frame.setEnabled(True)
 			self.prj_path_name.setEnabled(False)
 		else:
@@ -201,8 +241,12 @@ class prj_form_class(QtGui.QWidget):
 
 	def on_save_clicked(self):
 		global mesh_name_txt
-		mesh_name_txt = self.mesh_name.text()
 		
+		easy_lbl = QtGui.QLabel()
+		par.cdw.setTitleBarWidget(easy_lbl)
+		par.cdw.setWidget(easy_lbl)
+		
+		mesh_name_txt = self.mesh_name.text()
 		prj_lbl = QtGui.QLabel()
 		if int_lng == 'Russian':
 			prj_lbl.setText('Путь до файла расчетной сетки:')
@@ -234,14 +278,21 @@ class prj_form_class(QtGui.QWidget):
 		ldw_label.setStyleSheet("border-style: none;" "font-size: 10pt;")
 		par.ldw_grid.addWidget(ldw_label, 0, 0)
 		par.ldw.setTitleBarWidget(par.ldw_frame)
-		bmd_form = bmd_window_class(self, par)
-		par.ldw.setWidget(bmd_form)
+		if pd_2 == 'blockMesh':
+			bmd_form = bmd_window_class(self, par)
+			par.ldw.setWidget(bmd_form)
+			att_msg = 'blockMeshDict'
+				
+		elif pd_2 == 'snappyHexMesh':
+			shmd_form = shmd_window_class(self, par)
+			par.ldw.setWidget(shmd_form)
+			att_msg = 'snappyHexMeshDict'
 		
 		if self.cf_radio.isChecked() == True:
 			if int_lng == 'Russian':
-				msg = 'Загружены параметры сетки ' + self.mesh_name.text() + '. Установите ее в качестве текущей, выполнив создание файла blockMeshDict и генерацию сетки'
+				msg = 'Загружены параметры сетки ' + self.mesh_name.text() + '. Установите ее в качестве текущей, выполнив создание файла ' + att_msg + ' и генерацию сетки'
 			elif int_lng == 'English':
-				msg = 'Mesh parameters are loaded ' + self.mesh_name.text() + '. Set it as current by creating a blockMeshDict file and mesh generation'
+				msg = 'Mesh parameters are loaded ' + self.mesh_name.text() + '. Set it as current by creating a ' + att_msg + ' file and mesh generation'
 			par.listWidget.clear()
 			par.item = QtGui.QListWidgetItem(msg, par.listWidget)
 			color = QtGui.QColor("blue")
@@ -254,11 +305,12 @@ class prj_form_class(QtGui.QWidget):
 		par.msh_visual_run.setEnabled(True)
 		par.on_prj_path_get(prj_path, mesh_name_txt)
 		
-		if self.mesh_name.text() != pickles_dir:
-			os.rename(prj_dir, prj_path + '/' + self.mesh_name.text())
+		if self.cf_radio.isChecked() == True:
+			if self.mesh_name.text() != pickles_dir:
+				os.rename(prj_dir, prj_path + '/' + self.mesh_name.text() + '_' + pd_2) 
 		
 	def prj_path_return(self):
-		return(prj_path, mesh_name_txt)
+		return(prj_path, mesh_name_txt, pd_2)
 	
 	def int_lng_path_return(self):
 		return(int_lng)

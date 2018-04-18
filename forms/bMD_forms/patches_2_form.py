@@ -6,13 +6,13 @@ import pickle
 import os
 
 class patches_2_class():
-	def out_frame_func(int_lng, prj_path, mesh_name_txt, patches_visible): 
+	def out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, patches_visible): 
 		patches_2_obj = None
 		
 		#----------------Если файл patches_2.pkl существует, получаем данные из него для вывода в форму---------------#
 		
 		if patches_visible == True:
-			patches_2_path_file = prj_path + '/' + mesh_name_txt + '/' + 'patches_2.pkl'
+			patches_2_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'patches_2.pkl'
 			if os.path.exists(patches_2_path_file):
 		
 				input = open(patches_2_path_file, 'rb')
@@ -27,7 +27,7 @@ class patches_2_class():
 		
 		#-------------Формируем внешний вид формы для файла patches_2.pkl на основе данных файла patches_1.pkl----------#
 		
-		patches_1_path_file = prj_path + '/' + mesh_name_txt + '/' + 'patches_1.pkl'
+		patches_1_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'patches_1.pkl'
 		if os.path.exists(patches_1_path_file):
 		
 			input = open(patches_1_path_file, 'rb')

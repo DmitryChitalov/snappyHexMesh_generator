@@ -6,13 +6,13 @@ import pickle
 import os
 
 class vertices_class():
-	def out_frame_func(int_lng, prj_path, mesh_name_txt, vertices_visible): 
+	def out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, vertices_visible): 
 		vertices_obj = None
 		
 		#----------------Если файл vertices.pkl существует, получаем данные из него для вывода в форму---------------#
 
 		if vertices_visible == True:
-			vertices_path_file = prj_path + '/' + mesh_name_txt + '/' + 'vertices.pkl'
+			vertices_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'vertices.pkl'
 			if os.path.exists(vertices_path_file):
 		
 				input = open(vertices_path_file, 'rb')
@@ -27,7 +27,7 @@ class vertices_class():
 		elif int_lng == 'English':
 			main_lbl.setText("List of coordinates of vertices")
 			
-		initial_path_file = prj_path + '/' + mesh_name_txt + '/' + 'initial.pkl'
+		initial_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'initial.pkl'
 		if os.path.exists(initial_path_file):
 		
 			input = open(initial_path_file, 'rb')

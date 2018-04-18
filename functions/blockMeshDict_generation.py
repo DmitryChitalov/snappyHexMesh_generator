@@ -7,7 +7,7 @@ import os
 import shutil
 
 class blockMeshDict_generation_class:			
-	def blockMeshDict_func(int_lng, parn, tab, spe_edit, spp_edit, mpp_edit, prj_path, mesh_name_txt, bmd_par): 
+	def blockMeshDict_func(int_lng, parn, tab, spe_edit, spp_edit, mpp_edit, prj_path, mesh_name_txt, pd_2, bmd_par): 
 		def blockMeshDict_end(int_lng, prj_path, parn):
 			bMD = open(prj_path + '/blockMeshDict', 'a')
 
@@ -32,14 +32,15 @@ class blockMeshDict_generation_class:
 			elif int_lng == 'English':
 				parn.outf_lbl.setText("'blockMeshDict' file") 
 			parn.outf_edit.setText(data)
-			parn.cdw.setWidget(parn.outf_scroll)
+			#parn.cdw.setWidget(parn.outf_scroll)
 
 			parn.cdw.setTitleBarWidget(parn.cdw_frame)
 	
+########################____####################
 		msg_list = []
 		
 		#проверяем на заполнение initial#
-		initial_path = prj_path + '/' + mesh_name_txt + '/' + 'initial.pkl'
+		initial_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'initial.pkl'
 		if os.path.exists(initial_path):
 			initial_vkl_arr = []
 			
@@ -63,7 +64,7 @@ class blockMeshDict_generation_class:
 			initial_vkl_arr.append(None)
 			
 		#проверяем на заполнение vertices#
-		vertices_path = prj_path + '/' + mesh_name_txt + '/' + 'vertices.pkl'
+		vertices_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'vertices.pkl'
 		if os.path.exists(vertices_path):	
 			vertices_vkl_arr = []
 			
@@ -84,7 +85,7 @@ class blockMeshDict_generation_class:
 			vertices_vkl_arr.append(None)
 				
 		#проверяем на заполнение blocks_1#
-		blocks_1_path = prj_path + '/' + mesh_name_txt + '/' + 'blocks_1.pkl'
+		blocks_1_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'blocks_1.pkl'
 		if os.path.exists(blocks_1_path):	
 			blocks_1_vkl_arr = []
 			
@@ -104,7 +105,7 @@ class blockMeshDict_generation_class:
 			blocks_1_vkl_arr.append(None)
 		
 		#проверяем на заполнение block_2#
-		blocks_2_path = prj_path + '/' + mesh_name_txt + '/' + 'blocks_2.pkl'
+		blocks_2_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'blocks_2.pkl'
 		if os.path.exists(blocks_2_path):	
 			blocks_2_vkl_arr = []
 			
@@ -123,8 +124,8 @@ class blockMeshDict_generation_class:
 			msg_list.append(msg)
 			blocks_2_vkl_arr.append(None)
 		
-		edges_1_path = prj_path + '/' + mesh_name_txt + '/' + 'edges_1.pkl'
-		edges_2_path = prj_path + '/' + mesh_name_txt + '/' + 'edges_2.pkl'
+		edges_1_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'edges_1.pkl'
+		edges_2_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'edges_2.pkl'
 		if spe_edit.isChecked() == True:
 			#проверяем на заполнение edges_1#
 			
@@ -167,8 +168,8 @@ class blockMeshDict_generation_class:
 				msg_list.append(msg)
 				edges_2_vkl_arr.append(None)
 		
-		patches_1_path = prj_path + '/' + mesh_name_txt + '/' + 'patches_1.pkl'
-		patches_2_path = prj_path + '/' + mesh_name_txt + '/' + 'patches_2.pkl'
+		patches_1_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'patches_1.pkl'
+		patches_2_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'patches_2.pkl'
 		if spp_edit.isChecked() == True:
 			#проверяем на заполнение patches_1#
 			
@@ -210,7 +211,8 @@ class blockMeshDict_generation_class:
 				msg_list.append(msg)
 				patches_2_vkl_arr.append(None)
 		
-		mergepatchpairs_path = prj_path + '/' + mesh_name_txt + '/' + 'mergepatchpairs.pkl'
+		mergepatchpairs_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'mergepatchpairs.pkl'
+		mergepatchpairs_path = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'mergepatchpairs.pkl'
 		if mpp_edit.isChecked() == True:
 			#проверяем на заполнение mergepatchpairs#
 			

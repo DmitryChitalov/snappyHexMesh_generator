@@ -6,13 +6,13 @@ import pickle
 import os
 
 class blocks_2_class():
-	def out_frame_func(int_lng, prj_path, mesh_name_txt, blocks_visible): 
+	def out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, blocks_visible): 
 		blocks_2_obj = None
 		
 		#----------------Если файл blocks_2.pkl существует, получаем данные из него для вывода в форму---------------#
 		
 		if blocks_visible == True:	
-			blocks_2_path_file = prj_path + '/' + mesh_name_txt + '/' + 'blocks_2.pkl'
+			blocks_2_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'blocks_2.pkl'
 			if os.path.exists(blocks_2_path_file):
 		
 				input = open(blocks_2_path_file, 'rb')
@@ -28,7 +28,7 @@ class blocks_2_class():
 			
 		#---------------Формируем внешний вид формы для файла blocks_2.pkl на основе данных файла blocks_1.pkl-------------#
 		
-		blocks_1_path_file = prj_path + '/' + mesh_name_txt + '/' + 'blocks_1.pkl'
+		blocks_1_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'blocks_1.pkl'
 		if os.path.exists(blocks_1_path_file):
 		
 			input = open(blocks_1_path_file, 'rb')

@@ -6,12 +6,12 @@ import pickle
 import os
 
 class initial_class():
-	def out_frame_func(int_lng, prj_path, mesh_name_txt): 
+	def out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2): 
 		obj = None
 		
 		#----------------Если файл initial.pkl существует, получаем данные из него для вывода в форму---------------#
 
-		initial_path_file = prj_path + '/' + mesh_name_txt + '/' + 'initial.pkl'
+		initial_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'initial.pkl'
 		if os.path.exists(initial_path_file):
 			input = open(initial_path_file, 'rb')
 			obj = pickle.load(input)

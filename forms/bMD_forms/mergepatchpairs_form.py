@@ -6,14 +6,14 @@ import pickle
 import os
 
 class mergepatchpairs_class():
-	def out_frame_func(int_lng, prj_path, mesh_name_txt, mergepatchpairs_visible): 
+	def out_frame_func(int_lng, prj_path, mesh_name_txt, pd_2, mergepatchpairs_visible): 
 		mergepatchpairs_obj = None
 		
 		#----------------Если файл mergepatchpairs.pkl существует, получаем данные из него для вывода в форму---------------#
 		
 		if mergepatchpairs_visible == True:
 		
-			mergepatchpairs_path_file = prj_path + '/' + mesh_name_txt + '/' + 'mergepatchpairs.pkl'
+			mergepatchpairs_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'mergepatchpairs.pkl'
 			if os.path.exists(mergepatchpairs_path_file):
 		
 				input = open(mergepatchpairs_path_file, 'rb')
@@ -28,7 +28,7 @@ class mergepatchpairs_class():
 		
 		#---------------Формируем внешний вид формы для файла mergepatchpairs.pkl на основе данных файла mergepatchpairs.pkl -------------#
 		
-		patches_1_path_file = prj_path + '/' + mesh_name_txt + '/' + 'patches_1.pkl'
+		patches_1_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'patches_1.pkl'
 		if os.path.exists(patches_1_path_file):
 		
 			input = open(patches_1_path_file, 'rb')
@@ -42,7 +42,7 @@ class mergepatchpairs_class():
 				p_name_list.append(p_name)
 				k = k + 1
 				
-		initial_path_file = prj_path + '/' + mesh_name_txt + '/' + 'initial.pkl'
+		initial_path_file = prj_path + '/' + mesh_name_txt + '_' + pd_2 + '/' + 'initial.pkl'
 		if os.path.exists(initial_path_file):
 		
 			input = open(initial_path_file, 'rb')
